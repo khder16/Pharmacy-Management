@@ -94,25 +94,24 @@ const login = async (req, res) => {
             res.status(400).send("Enter email and password");
         }
 
-        let admin
-        admin = await Admin.findOne({ email })
-        if (!admin) {
-            res.json({ msg: "there is no admin with this email" })
+        let user
+        user = await User.findOne({ email }) || await Admin.findOne({ email })
+        if (!user) {
+            res.json({ msg: "there is no user with this email" })
         }
 
-        if (admin && (await bcrypt.compare(password, admin.password))) {
+        if (user && (await bcrypt.compare(password, user.password))) {
             const token = await jwt.sign(
-                { user_id: admin._id, role: admin.role, email: admin.email },
+                { user_id: user._id, role: user.role, email: user.email },
                 process.env.TOKEN_KEY,
                 {
                     expiresIn: "30d",
                 }
             );
             res.cookie("token", token, { maxAge: 240 * 60 * 60 * 1000 })
-
         }
+        res.status(200).json(user);
 
-        res.status(200).json(admin);
     } catch (error) {
         console.log(error);
     }
