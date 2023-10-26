@@ -20,6 +20,7 @@ and the admin can manage the medicines and order the medicines when the quantity
 ## Installation
 
 1- $ npm install
+
 2- $ npm start
 
 "# Pharmacy-Management"  git init git add README.md git commit -m "first commit" git branch -M main git remote add origin https://github.com/khder16/Pharmacy-Management.git git push -u origin main
